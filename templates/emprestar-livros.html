@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Emprestar Livro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Emprestar o Livro: "{{ book.title }}"</h1>
+
+    <form action="" method="post">
+        <label for="due_date">Escolha a Data de Devolução:</label>
+        <input type="date" id="due_date" name="due_date" required>
+        <button type="submit">Confirmar Empréstimo</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('index') }}">Voltar para a lista de livros</a>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Livros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Cadastro de Livros</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="title" placeholder="Título" required>
+        <input type="text" name="author" placeholder="Autor" required>
+        <button type="submit">Adicionar Livro</button>
+    </form>
+
+    {% if fine is defined %}
+        <p style="color:red;">Multa por atraso: R${{ fine }}</p>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>
+                {% if book.lended %}
+                    Emprestado até {{ book.due_date.strftime('%d/%m/%Y') }}
+                {% else %}
+                    Disponível
+                {% endif %}
+            </td>
+            <td>
+                {% if not book.lended %}
+                    <form action="/lend/{{ loop.index0 }}" method="post">
+                        <input type="date" name="due_date" required>
+                        <button type="submit">Emprestar</button>
+                    </form>
+                {% else %}
+                    <a href="/return/{{ loop.index0 }}">Devolver</a>
+                {% endif %}
+                <a href="/delete/{{ loop.index0 }}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
